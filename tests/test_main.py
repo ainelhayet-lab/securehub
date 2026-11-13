@@ -11,3 +11,7 @@ def test_search():
 
 def test_remise_vip():
     assert remise(100, True) == 80
+
+
+def test_remise_non_vip():
+    assert remise(100, False) == 100
