@@ -27,3 +27,11 @@ def remise(montant: float, vip: bool) -> float:
     if vip:
         return montant * 0.8
     return montant
+
+
+def tva(montant: float, taux: float = 0.2) -> float:
+    if taux < 0:
+        raise ValueError("taux négatif")
+    if taux > 1:
+        raise ValueError("taux supérieur à 100 %")
+    return round(montant * (1 + taux), 2)
