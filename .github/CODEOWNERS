@@ -1,0 +1,4 @@
+# Toute modification de la CI ou des règles de l'agent doit être relue par la plateforme
+*           @ainelhayet-lab/devs
+/.github/   @ainelhayet-lab/plateforme
+/.claude/   @ainelhayet-lab/plateforme
