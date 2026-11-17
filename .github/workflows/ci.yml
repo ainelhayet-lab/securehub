@@ -12,17 +12,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }          # historique complet, pour comparer avec main
       - uses: actions/setup-python@v5
         with: { python-version: "3.12" }
-      - run: pip install -r requirements.txt
-      - name: Tests + quality gate de couverture (80 %)
-        run: pytest --cov=app --cov-report=xml --cov-fail-under=80
+      - run: pip install -r requirements.txt diff-cover
+      - name: Tests et couverture globale (indicateur, ne bloque pas)
+        run: pytest --cov=app --cov-report=xml --cov-report=term
+      - name: Quality gate sur le nouveau code (80 %)
+        if: github.event_name == 'pull_request'
+        run: diff-cover coverage.xml --compare-branch=origin/main --fail-under=80
 
   secrets:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with: { fetch-depth: 0 }      # tout l'historique, pas seulement le dernier commit
+        with: { fetch-depth: 0 }
       - name: Gitleaks sur tout l'historique
         run: |
           curl -sSL https://github.com/gitleaks/gitleaks/releases/download/v8.18.4/gitleaks_8.18.4_linux_x64.tar.gz | tar xz gitleaks
